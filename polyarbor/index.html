@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PolyArbor - Rhythm Sequencer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              mono: ['"JetBrains Mono"', 'monospace'],
+              sans: ['"Inter"', 'sans-serif'],
+            },
+            colors: {
+              daw: {
+                bg: '#1e1e1e',        // Main background
+                panel: '#2d2d2d',     // Rack panels
+                surface: '#363636',   // Raised surfaces
+                inset: '#141414',     // Screen/Inset areas
+                text: '#d4d4d4',      // Primary text
+                dim: '#787878',       // Secondary text
+                border: '#454545',
+                accent: '#ff8800',    // FL Orange
+                highlight: '#96ff00', // FL Green
+                alert: '#ff3333',
+              }
+            },
+            boxShadow: {
+              'knob': '0 4px 6px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1)',
+              'led': '0 0 8px 2px',
+              'inset': 'inset 2px 2px 5px rgba(0,0,0,0.6), inset -1px -1px 1px rgba(255,255,255,0.05)'
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #121212;
+        color: #d4d4d4;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+      }
+      
+      /* Custom Scrollbar for the Rack */
+      ::-webkit-scrollbar {
+        width: 8px;
+        background: #1e1e1e;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #454545;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+      
+      .lcd-text {
+        font-family: 'JetBrains Mono', monospace;
+        letter-spacing: 0.05em;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "uuid": "https://aistudiocdn.com/uuid@^13.0.0",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "d3": "https://aistudiocdn.com/d3@^7.9.0",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "name": "PolyArbor",
+  "description": "A generative polyrhythm sequencer that visualizes conflicting rhythms as a pulsating organic tree. Features neumorphic design and procedural audio synthesis.",
+  "requestFramePermissions": []
+}
