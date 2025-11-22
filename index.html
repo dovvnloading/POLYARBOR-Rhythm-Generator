@@ -146,6 +146,32 @@
             box-shadow: 0 0 10px rgba(143, 253, 0, 0.2);
         }
 
+        /* VIDEO CONTAINER */
+        .video-section {
+            padding: 20px;
+            background: #1a1a1a;
+            border-bottom: 1px solid var(--border-muted);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Ratio */
+            height: 0;
+            overflow: hidden;
+            max-width: 1000px;
+            margin: 0 auto;
+            border: 1px solid var(--border-muted);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         /* IMAGE GRID (SCREENSHOTS) */
         .screenshot-grid {
             display: grid;
@@ -159,6 +185,7 @@
             border: 1px solid var(--border-muted);
             position: relative;
             overflow: hidden;
+            cursor: zoom-in; /* Indicates clickable */
         }
 
         .screen-wrapper img {
@@ -166,10 +193,30 @@
             height: auto;
             display: block;
             opacity: 0.85;
-            transition: opacity 0.3s;
+            transition: all 0.3s;
         }
         
-        .screen-wrapper:hover img { opacity: 1; }
+        .screen-wrapper:hover img { 
+            opacity: 1; 
+            transform: scale(1.03);
+        }
+        
+        .screen-wrapper::after {
+            content: 'EXPAND +';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            color: var(--accent-green);
+            padding: 5px 10px;
+            font-family: var(--font-code);
+            border: 1px solid var(--accent-green);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .screen-wrapper:hover::after { opacity: 1; }
 
         /* FEATURES GRID */
         .features-grid {
@@ -252,6 +299,61 @@
         .cmd { display: block; margin-bottom: 10px; }
         .cmd::before { content: '$ '; color: var(--accent-orange); opacity: 0.8; }
 
+        /* IMAGE MODAL (LIGHTBOX) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            background-color: rgba(0,0,0,0.9); 
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 90%;
+            box-shadow: 0 0 30px rgba(205, 99, 49, 0.3);
+            border: 1px solid var(--accent-orange);
+            border-radius: 4px;
+            animation: zoomIn 0.3s;
+        }
+
+        @keyframes zoomIn {
+            from {transform:scale(0.8); opacity: 0;} 
+            to {transform:scale(1); opacity: 1;}
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: var(--text-main);
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+            font-family: var(--font-ui);
+            line-height: 1;
+        }
+
+        .close-modal:hover,
+        .close-modal:focus {
+            color: var(--accent-orange);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
         /* FOOTER */
         footer {
             text-align: center;
@@ -270,6 +372,7 @@
             .screenshot-grid { grid-template-columns: 1fr; }
             h1 { font-size: 1.8rem; }
             .nav-strip { flex-wrap: wrap; }
+            .close-modal { top: 10px; right: 20px; }
         }
     </style>
 </head>
@@ -299,15 +402,32 @@
                 </div>
             </div>
 
+            <!-- VIDEO EMBED START -->
+            <div class="video-section">
+                <div class="video-wrapper">
+                    <iframe 
+                        width="560" 
+                        height="315" 
+                        src="https://www.youtube.com/embed/7fEjMOSVR0g?si=DnElJBET7AcdYwE8" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            <!-- VIDEO EMBED END -->
+
             <div class="screenshot-grid">
                 <div class="screen-wrapper">
-                    <img src="https://github.com/user-attachments/assets/cea4b849-30ee-495f-aac7-868c6bd01b0e" alt="Main Interface">
+                    <img src="https://github.com/user-attachments/assets/cea4b849-30ee-495f-aac7-868c6bd01b0e" alt="Main Interface" class="preview-trigger">
                 </div>
                 <div class="screen-wrapper">
-                    <img src="https://github.com/user-attachments/assets/f46dd8ef-7961-498e-a103-58701fa2d704" alt="Settings">
+                    <img src="https://github.com/user-attachments/assets/f46dd8ef-7961-498e-a103-58701fa2d704" alt="Settings" class="preview-trigger">
                 </div>
                 <div class="screen-wrapper">
-                    <img src="https://github.com/user-attachments/assets/d0564f3c-245c-4648-94b1-fd19c5504734" alt="Visualizer">
+                    <img src="https://github.com/user-attachments/assets/d0564f3c-245c-4648-94b1-fd19c5504734" alt="Visualizer" class="preview-trigger">
                 </div>
             </div>
         </div>
@@ -421,12 +541,63 @@
                 <a href="https://github.com/dovvnloading">GITHUB PROFILE</a> • 
                 <a href="https://github.com/dovvnloading/POLYARBOR-Rhythm-Generator">REPOSITORY</a>
             </p>
-            <p style="font-size: 0.8rem; margin-top: 20px; opacity: 0.5;">
-               
-            </p>
         </footer>
 
     </div>
+
+    <!-- LIGHTBOX MODAL HTML -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="expandedImg">
+    </div>
+
+    <!-- LIGHTBOX LOGIC -->
+    <script>
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("expandedImg");
+        const closeBtn = document.querySelector(".close-modal");
+        const images = document.querySelectorAll('.preview-trigger');
+
+        // Add click event to all images
+        images.forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = "flex";
+                // Small timeout to allow display flex to apply before changing opacity for transition
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 10);
+                modalImg.src = this.src;
+                modalImg.alt = this.alt;
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+        });
+
+        // Function to hide modal
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = "none";
+                document.body.style.overflow = 'auto'; // Restore scrolling
+            }, 300);
+        }
+
+        // Close events
+        closeBtn.addEventListener('click', closeModal);
+
+        // Close when clicking background area
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape" && modal.style.display === "flex") {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
